@@ -7,6 +7,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route, Link } from 'react-router-dom'
 import Loadable from 'react-loadable'
 import AppRoute from './routes/app'
+import SmartNotification from './routes/smartNotification'
 
 const registerModel = (app, model) => {
   if (!(app._models.filter(m => m.namespace === model.namespace).length === 1)) {
@@ -23,7 +24,7 @@ const Routers = function ({ history, app }) {
 		<ConnectedRouter history={history}>
 			<AppRoute>
 				<Switch>
-					<Route component={error} />
+					<Route component={SmartNotification} />
 		    </Switch>
 			</AppRoute>
 		</ConnectedRouter>
