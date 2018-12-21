@@ -4,26 +4,45 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+import './smartNotification.less'
+
+const config = {
+	tagName: 'textarea'
+}
+const textareaProps = {
+	style: {
+    border: '1px solid #ccc',
+    width: '400px',
+    height: '200px',
+    overflowY: 'auto'
+	}
+}
 
 class Notification extends React.PureComponent {
 	constructor(props) {
 		super(props)
-		this.textarea = null; // 当前输入框节点
+		this.inputTarget = React.createRef(); // 当前输入框节点
+		this.bgTarget = React.createRef(); // 当前输入框节点
 	}
 	componentDidMount() {
-		if(!document.querySelector('textarea')) {return ;}
-		this.textarea = document.querySelector('textarea');
-		console.log(this.textarea)
+		this.inputTarget.current.addEventListener('input', () => this.onOperating());
+		this.inputTarget.current.addEventListener('click', () => this.onOperating());
+	}
+	// 用户操作 event handle
+	onOperating() {
+		console.log(this.inputTarget.current, this.inputTarget.current.selectionStart);
+		this.bgTarget.current.innerHTML = this.inputTarget.current.value.replace(/\n/g, '<br />');
 	}
 	render() {
-		return (<React.Fragment>
-	    {this.props.children}
-	  </React.Fragment>)
+		return (<div className="notificationContainer">
+	    <textarea ref={this.inputTarget} {...textareaProps}></textarea>
+	    <div ref={this.bgTarget} className="notificationBg" style={textareaProps.style}></div>
+	  </div>)
 	}
 }
 
 Notification.propTypes = {
-  children: PropTypes.element.isRequired
+  notificateWords: PropTypes.array
 }
 
 export default Notification
